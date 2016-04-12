@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Interval represent time interval.
+// Interval represent time interval in Postgres-compatible way.
 // It consists of 3 fields:
 // 	Months - number months (integer)
 // 	Days - number of days (integer)
