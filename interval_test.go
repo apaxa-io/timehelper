@@ -13,7 +13,7 @@ func TestParse(t *testing.T) {
 		err bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			s: "-1 year -2 mons +3 days -04:05:06",
@@ -194,11 +194,11 @@ func TestParse(t *testing.T) {
 	for j, v := range test {
 		i, err := Parse(v.s)
 		if (err != nil) != v.err {
-			t.Errorf("TestParse - %v, got error: %s", j, err)
+			t.Errorf("Test-%v, got error: %s", j, err)
 		}
 		if !v.err && (err == nil) {
 			if !i.Equal(v.i) {
-				t.Errorf("TestParse - %v, Intervals not equal.\nExpected:\n%v\ngot:\n%v", j, v.i, i)
+				t.Errorf("Test-%v. Intervals not equal.\nExpected:\n%v\ngot:\n%v", j, v.i, i)
 			}
 		}
 	}
@@ -211,7 +211,7 @@ func TestString(t *testing.T) {
 		err bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			s: "-1 year -2 mons 3 days -04:05:06",
@@ -306,7 +306,7 @@ func TestString(t *testing.T) {
 	for j, v := range test {
 		s := v.i.String()
 		if s != v.s {
-			t.Errorf("TestParse - %v, strings not equal.\nExpected:\n%s\ngot:\n%s", j, v.s, s)
+			t.Errorf("Test-%v. Strings not equal.\nExpected:\n%s\ngot:\n%s", j, v.s, s)
 		}
 	}
 }
@@ -318,7 +318,7 @@ func TestAdd(t *testing.T) {
 		res Interval
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{-14, 3, -14706},
@@ -378,7 +378,7 @@ func TestAdd(t *testing.T) {
 	for j, v := range test {
 		i := v.i.Add(v.add)
 		if !i.Equal(v.res) {
-			t.Errorf("TestAdd - %v, Intervals are not equal.\nExpected:\n%v\ngot:\n%v", j, v.res, i)
+			t.Errorf("Test-%v. Intervals are not equal.\nExpected:\n%v\ngot:\n%v", j, v.res, i)
 		}
 	}
 }
@@ -392,7 +392,7 @@ func TestDuration(t *testing.T) {
 		d            time.Duration
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{0, 0, 86400},
@@ -445,7 +445,7 @@ func TestDuration(t *testing.T) {
 	for j, v := range test {
 		d := v.i.Duration(v.daysInMonth, v.secondsInDay)
 		if d != v.d {
-			t.Errorf("TestDuration - %v. Wrong duration. Expected: %v, got: %v", j, v.d, d)
+			t.Errorf("Test-%v. Wrong duration. Expected: %v, got: %v", j, v.d, d)
 		}
 	}
 }
@@ -457,7 +457,7 @@ func TestSub(t *testing.T) {
 		res Interval
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -518,7 +518,7 @@ func TestSub(t *testing.T) {
 	for j, v := range test {
 		s := v.i.Sub(v.sub)
 		if !s.Equal(v.res) {
-			t.Errorf("TestSub - %v. Wrong sub.\nExpected interval:%v\ngot:%v", j, v.res, s)
+			t.Errorf("Test-%v. Wrong sub.\nExpected interval:%v\ngot:%v", j, v.res, s)
 		}
 	}
 }
@@ -531,7 +531,7 @@ func TestMul(t *testing.T) {
 		res Interval
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -571,7 +571,7 @@ func TestMul(t *testing.T) {
 	for j, v := range test {
 		i := v.i.Mul(v.mul)
 		if (i.Months != v.res.Months) || (i.Days != v.res.Days) || (math.Abs(i.Seconds-v.res.Seconds) > inaccuracySeconds) {
-			t.Errorf("TestMul - %v. Wrong interval.\nExpected:%v\ngot:%v", j, v.res, i)
+			t.Errorf("Test-%v. Wrong interval.\nExpected:%v\ngot:%v", j, v.res, i)
 		}
 	}
 }
@@ -584,7 +584,7 @@ func TestDiv(t *testing.T) {
 		res Interval
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{4, 6, 8},
@@ -603,7 +603,7 @@ func TestDiv(t *testing.T) {
 	for j, v := range test {
 		i := v.i.Div(v.div)
 		if (i.Months != v.res.Months) || (i.Days != v.res.Days) || (math.Abs(i.Seconds-v.res.Seconds) > inaccuracySeconds) {
-			t.Errorf("TestDiv - %v. Wrong interval.\nExpected:%v\ngot:%v", j, v.res, i)
+			t.Errorf("Test-%v. Wrong interval.\nExpected:%v\ngot:%v", j, v.res, i)
 		}
 	}
 }
@@ -615,7 +615,7 @@ func TestEqual(t *testing.T) {
 		res bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -676,7 +676,7 @@ func TestEqual(t *testing.T) {
 	for j, v := range test {
 		b := v.i.Equal(v.i2)
 		if b != v.res {
-			t.Errorf("TestEqual - %v. Intervals are not equal.\n1st interval:%v\n2nd interval:%v", j, v.i, v.i2)
+			t.Errorf("Test-%v. Intervals are not equal.\n1st interval:%v\n2nd interval:%v", j, v.i, v.i2)
 		}
 	}
 }
@@ -688,7 +688,7 @@ func TestGreaterOrEqualAndLessOrEqual(t *testing.T) {
 		res bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -756,15 +756,12 @@ func TestGreaterOrEqualAndLessOrEqual(t *testing.T) {
 	}
 
 	for j, v := range test {
-		b := v.i.GreaterOrEqual(v.i2)
-		if b != v.res {
+		bG := v.i.GreaterOrEqual(v.i2)
+		if bG != v.res {
 			t.Errorf("TestGreaterOrEqual - %v. Intervals are not GreaterOrEqual.\n1st interval:%v\n2nd interval:%v", j, v.i, v.i2)
 		}
-	}
-
-	for j, v := range test {
-		b := v.i2.LessOrEqual(v.i)
-		if b != v.res {
+		bL := v.i2.LessOrEqual(v.i)
+		if bL != v.res {
 			t.Errorf("TestLessOrEqual - %v. Intervals are not LessOrEqual.\n1st interval:%v\n2nd interval:%v", j, v.i2, v.i)
 		}
 	}
@@ -777,7 +774,7 @@ func TestLessAndGreater(t *testing.T) {
 		res bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -816,15 +813,12 @@ func TestLessAndGreater(t *testing.T) {
 	}
 
 	for j, v := range test {
-		b := v.i.Less(v.i2)
-		if b != v.res {
+		bL := v.i.Less(v.i2)
+		if bL != v.res {
 			t.Errorf("TestLess - %v. 1st interval not less than 2nd.\n1st interval:%v\n2nd interval:%v", j, v.i, v.i2)
 		}
-	}
-
-	for j, v := range test {
-		b := v.i2.Greater(v.i)
-		if b != v.res {
+		bG := v.i2.Greater(v.i)
+		if bG != v.res {
 			t.Errorf("TestGreater - %v. 1st interval not greater than 2nd.\n1st interval:%v\n2nd interval:%v", j, v.i2, v.i)
 		}
 	}
@@ -837,7 +831,7 @@ func TestComparable(t *testing.T) {
 		res bool
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1, 2, 3},
@@ -884,7 +878,7 @@ func TestComparable(t *testing.T) {
 	for j, v := range test {
 		b := v.i.Comparable(v.i2)
 		if b != v.res {
-			t.Errorf("TestComparable - %v. Intervals are not Comparable.\n1st interval:%v\n2nd interval:%v", j, v.i2, v.i)
+			t.Errorf("Test-%v. Intervals are not Comparable.\n1st interval:%v\n2nd interval:%v", j, v.i2, v.i)
 		}
 	}
 }
@@ -898,7 +892,7 @@ func TestAddToAndSubFrom(t *testing.T) {
 		res time.Time
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{0, 0, 1},
@@ -948,10 +942,9 @@ func TestAddToAndSubFrom(t *testing.T) {
 			//if t1 != v.res {
 			t.Errorf("TestAddTo - %v. Wrong time\nExpected time:\n%v\ngot:\n%v", j, v.res.UTC(), tA.UTC())
 		}
-
 		tS := v.i.SubFrom(v.res)
 		if time.Duration(math.Abs(float64(tS.Sub(v.res)))) > inaccuracySeconds*time.Second {
-			t.Errorf("TestAddTo - %v. Wrong time\nExpected time:\n%v\ngot:\n%v", j, v.t.UTC(), tS.UTC())
+			t.Errorf("TestSubFrom - %v. Wrong time\nExpected time:\n%v\ngot:\n%v", j, v.t.UTC(), tS.UTC())
 		}
 	}
 
@@ -969,7 +962,7 @@ func TestNormal(t *testing.T) {
 		nsec int32
 	}
 
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{1001, 101, 1001.3},
@@ -1010,31 +1003,31 @@ func TestNormal(t *testing.T) {
 	for j, v := range test {
 		y := v.i.NormalYears()
 		if y != v.year {
-			t.Errorf("TestNormal - %v. Ecpected normal year: %v, got: %v", j, v.year, y)
+			t.Errorf("Test-%v. Ecpected normal year: %v, got: %v", j, v.year, y)
 		}
 		m := v.i.NormalMonths()
 		if m != v.mon {
-			t.Errorf("TestNormal - %v. Ecpected normal month: %v, got: %v", j, v.mon, m)
+			t.Errorf("Test-%v. Ecpected normal month: %v, got: %v", j, v.mon, m)
 		}
 		d := v.i.NormalDays()
 		if d != v.day {
-			t.Errorf("TestNormal - %v. Ecpected normal days: %v, got: %v", j, v.day, d)
+			t.Errorf("Test-%v. Ecpected normal days: %v, got: %v", j, v.day, d)
 		}
 		h := v.i.NormalHours()
 		if h != v.hour {
-			t.Errorf("TestNormal - %v. Ecpected normal hours: %v, got: %v", j, v.hour, h)
+			t.Errorf("Test-%v. Ecpected normal hours: %v, got: %v", j, v.hour, h)
 		}
 		min := v.i.NormalMinutes()
 		if min != v.min {
-			t.Errorf("TestNormal - %v. Ecpected normal minutes: %v, got: %v", j, v.min, min)
+			t.Errorf("Test-%v. Ecpected normal minutes: %v, got: %v", j, v.min, min)
 		}
 		s := v.i.NormalSeconds()
 		if s != v.sec {
-			t.Errorf("TestNormal - %v. Ecpected normal seconds: %v, got: %v", j, v.sec, s)
+			t.Errorf("Test-%v. Ecpected normal seconds: %v, got: %v", j, v.sec, s)
 		}
 		ns := v.i.NormalNanoseconds()
 		if ns != v.nsec {
-			t.Errorf("TestNormal - %v. Ecpected normal nanoseconds: %v, got: %v\n%v", j, v.nsec, ns, s)
+			t.Errorf("Test-%v. Ecpected normal nanoseconds: %v, got: %v\n%v", j, v.nsec, ns, s)
 		}
 	}
 }
@@ -1091,8 +1084,7 @@ func TestFromDuration(t *testing.T) {
 		i Interval
 		d time.Duration
 	}
-	//int64: -9223372036854775808 to 9223372036854775807
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{0, 0, 86400},
@@ -1132,7 +1124,7 @@ func TestFromDuration(t *testing.T) {
 	for j, v := range test {
 		i := FromDuration(v.d)
 		if i != v.i {
-			t.Errorf("TestFromDuration - %v. Wrong interval. Expected: %v, got: %v", j, v.i, i)
+			t.Errorf("Test-%v. Wrong interval. Expected: %v, got: %v", j, v.i, i)
 		}
 	}
 }
@@ -1143,8 +1135,7 @@ func TestDiff(t *testing.T) {
 		from time.Time
 		to   time.Time
 	}
-	//int64: -9223372036854775808 to 9223372036854775807
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{0, 0, 1},
@@ -1212,7 +1203,7 @@ func TestDiff(t *testing.T) {
 	for j, v := range test {
 		i := Diff(v.from, v.to)
 		if i != v.i {
-			t.Errorf("TestDiff - %v. Wrong interval\nExpected:\n%v\ngot:\n%v", j, v.i, i)
+			t.Errorf("Test-%v. Wrong interval\nExpected:\n%v\ngot:\n%v", j, v.i, i)
 		}
 	}
 }
@@ -1223,8 +1214,7 @@ func TestDiffExtended(t *testing.T) {
 		sFrom string
 		sTo   string
 	}
-
-	var test = []testElement{
+	test := []testElement{
 		// 0
 		testElement{
 			Interval{3507, 10, 85636.854775807},
@@ -1307,15 +1297,15 @@ func TestDiffExtended(t *testing.T) {
 		// RFC3339Nano = "2006-01-02T15:04:05.999 999 999Z07:00"
 		timeFrom, err := time.Parse(time.RFC3339Nano, v.sFrom)
 		if err != nil {
-			t.Errorf("TestDiffExtended - %v. Parsing string:%v\ngot err: %v", j, v.sFrom, err)
+			t.Errorf("Test-%v. Parsing string:%v\ngot err: %v", j, v.sFrom, err)
 		}
 		timeTo, err1 := time.Parse(time.RFC3339Nano, v.sTo)
 		if err1 != nil {
-			t.Errorf("TestDiffExtended - %v. Got err: %v, while parsing:%v", j, v.sTo, err1)
+			t.Errorf("Test-%v. Got err: %v, while parsing:%v", j, v.sTo, err1)
 		}
 		i := DiffExtended(timeFrom, timeTo)
 		if i != v.i {
-			t.Errorf("TestDiffExtended - %v. Wrong interval\nExpected:\n%v\ngot:\n%v", j, v.i, i)
+			t.Errorf("Test-%v. Wrong interval\nExpected:\n%v\ngot:\n%v", j, v.i, i)
 		}
 	}
 
@@ -1323,7 +1313,7 @@ func TestDiffExtended(t *testing.T) {
 
 func TestSince(t *testing.T) {
 	const inaccuracySeconds = 5
-	var test = []time.Time{time.Unix(1, 0), time.Unix(1e9, 1e18), time.Unix(0, 0)}
+	test := []time.Time{time.Unix(1, 0), time.Unix(1e9, 1e18), time.Unix(0, 0)}
 	//TODO check whats wrong with big values
 	// max time: time.Unix(1<<63-62135596801, 999999999)
 	//time.Unix(- 9223372036854775808, -9223372036854775808)
@@ -1331,7 +1321,7 @@ func TestSince(t *testing.T) {
 		sec := float64(time.Since(v)) / 1e9
 		i := Since(v)
 		if (i.Months != 0) || (i.Days != 0) || (math.Abs(i.Seconds-sec) > inaccuracySeconds) {
-			t.Errorf("TestDiff - %v. Time: %v\nExpected (time.Since):\n%f\ngot (Since):\n%f", j, v, sec, i.Seconds)
+			t.Errorf("Test-%v. Wrong time since: %v\nExpected (time.Since):\n%f\ngot (Since):\n%f", j, v, sec, i.Seconds)
 		}
 	}
 
@@ -1339,13 +1329,14 @@ func TestSince(t *testing.T) {
 
 func TestSinceExtended(t *testing.T) {
 	const inaccuracySeconds = 5
-	var test = []time.Time{time.Unix(1, 0), time.Unix(1e9, 1e18), time.Unix(0, 0)}
+	test := []time.Time{time.Unix(1, 0), time.Unix(1e9, 1e18), time.Unix(0, 0)}
 	for j, v := range test {
 		i := SinceExtended(v)
 		v1 := v.AddDate(0, int(i.Months), int(i.Days))
 		v1 = v1.Add(time.Duration(i.Seconds) * time.Second)
 		if time.Since(v1) > inaccuracySeconds*time.Second || time.Since(v1) < -inaccuracySeconds*time.Second {
-			t.Errorf("TestDiffExtended - %v.\nTime: %v\nInterval:%v\nv1:%v\nts:%v", j, v, i, v1, time.Since(v1))
+			t.Errorf("Test-%v\nWrong time since: %v\nGit interval:%v\ntime now(v1):%v\nexpected time since(ts):%v", j, v, i, v1, time.Since(v1))
 		}
+
 	}
 }
