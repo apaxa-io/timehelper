@@ -514,7 +514,7 @@ func TestSub(t *testing.T) {
 func TestMul(t *testing.T) {
 	type testElement struct {
 		i   Interval
-		mul float64
+		mul int64
 		res Interval
 	}
 
@@ -534,11 +534,12 @@ func TestMul(t *testing.T) {
 		},
 
 		// 2
-		{
-			Interval{1, 2, 3 * 1e9, NanosecondPrecision},
-			1.05,
-			Interval{1, 2, 3150 * 1e6, NanosecondPrecision},
-		},
+		// TODO no more valid since moved from float64 to int64
+		//{
+		//	Interval{1, 2, 3 * 1e9, NanosecondPrecision},
+		//	1.05,
+		//	Interval{1, 2, 3150 * 1e6, NanosecondPrecision},
+		//},
 
 		// 3
 		{
@@ -567,7 +568,7 @@ func TestMul(t *testing.T) {
 func TestDiv(t *testing.T) {
 	type testElement struct {
 		i   Interval
-		div float64
+		div int64
 		res Interval
 	}
 
@@ -580,11 +581,12 @@ func TestDiv(t *testing.T) {
 		},
 
 		// 1
-		{
-			Interval{4, 6, 8 * 1e9, NanosecondPrecision},
-			1.1,
-			Interval{3, 5, 7272727272, NanosecondPrecision},
-		},
+		// TODO no more valid since moved from float64 to int64
+		//{
+		//	Interval{4, 6, 8 * 1e9, NanosecondPrecision},
+		//	1.1,
+		//	Interval{3, 5, 7272727272, NanosecondPrecision},
+		//},
 	}
 
 	for j, v := range test {
