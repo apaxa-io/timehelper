@@ -344,8 +344,8 @@ func (i Interval) String() string {
 }
 
 // Duration convert Interval to time.Duration.
-// It is required to pass number of days in mounth (usually 30 or something near)
-// and number of minutes in day (usually 1440) because of converting mounths and days parts of original Interval to time.Duration nanoseconds.
+// It is required to pass number of days in month (usually 30 or something near)
+// and number of minutes in day (usually 1440) because of converting months and days parts of original Interval to time.Duration nanoseconds.
 // Warning: this method is inaccuracy because in real life daysInMonth & minutesInDay vary and depends on relative timestamp.
 func (i Interval) Duration(daysInMonth uint8, minutesInDay uint32) time.Duration {
 	return time.Duration((int64(i.Months)*int64(daysInMonth)+int64(i.Days))*int64(minutesInDay)*mathhelper.PowInt64(10, int64(i.precision))*SecsInMin + i.SomeSeconds)
@@ -382,23 +382,36 @@ func (i Interval) Sub(sub Interval) Interval {
 }
 
 // Mul multiples interval by mul. Each part of Interval multiples independently.
-// Multiply by non integer value give expected value only if Months and Days are zero, as them stored as integer value.
 // Original Interval will be changed.
 // TODO 'will be changed'?
-func (i Interval) Mul(mul float64) Interval {
-	i.Months, i.Days, i.SomeSeconds = int32(float64(i.Months)*mul), int32(float64(i.Days)*mul), int64(float64(i.SomeSeconds)*mul)
+func (i Interval) Mul(mul int64) Interval {
+	i.Months, i.Days, i.SomeSeconds = int32(int64(i.Months)*mul), int32(int64(i.Days)*mul), int64(int64(i.SomeSeconds)*mul)
 	return i
 }
 
 // Div divides interval by mul. Each part of Interval divides independently.
-// Warning: Div may returns unexpected value because Months and Days stored as integer value.
+// Round rule: 0.4=>0 ; 0.5=>1 ; 0.6=>1 ; -0.4=>0 ; -0.5=>-1 ; -0.6=>-1
 // Original Interval will be changed.
 // TODO 'will be changed'?
-func (i Interval) Div(div float64) Interval {
-	i.Months = int32(float64(i.Months) / div)
-	i.Days = int32(float64(i.Days) / div)
-	i.SomeSeconds = int64(float64(i.SomeSeconds) / div)
+func (i Interval) Div(div int64) Interval {
+	i.Months = int32(mathhelper.DivideFixInt64(int64(i.Months), div))
+	i.Days = int32(mathhelper.DivideFixInt64(int64(i.Days), div))
+	i.SomeSeconds = mathhelper.DivideFixInt64(i.SomeSeconds, div)
 	return i
+}
+
+// In counts how many i contains in i2 (=i2/i).
+// Round rule: 0.4=>0 ; 0.5=>1 ; 0.6=>1 ; -0.4=>0 ; -0.5=>-1 ; -0.6=>-1
+// TODO A lot of overflows
+func (i Interval) In(i2 Interval) int64 {
+	iv := (int64(i.Months)*DaysInMonth+int64(i.Days))*SecsInDay*mathhelper.PowInt64(10, int64(i.precision)) + i.SomeSeconds
+	i2v := (int64(i2.Months)*DaysInMonth+int64(i2.Days))*SecsInDay*mathhelper.PowInt64(10, int64(i2.precision)) + i2.SomeSeconds
+	if i.precision > i2.precision {
+		i2v = someSecondsChangePrecision(i2v, i2.precision, i.precision)
+	} else {
+		iv = someSecondsChangePrecision(iv, i.precision, i2.precision)
+	}
+	return mathhelper.DivideFixInt64(i2v, iv)
 }
 
 // Comparable returns true only if it is possible to compare Intervals.

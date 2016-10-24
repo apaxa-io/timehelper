@@ -13,7 +13,7 @@ const (
 	MinsInHour   = 60
 	SecsInMin    = 60
 
-	// Derivated
+	// Derived
 	MinsInDay  = MinsInHour * HoursInDay
 	SecsInDay  = SecsInMin * MinsInDay
 	SecsInHour = SecsInMin * MinsInHour
@@ -32,6 +32,12 @@ const (
 	PicosecsInMicrosec = 1e6
 
 	PicosecsInNanosec = 1e3
+)
+
+const (
+	// Approximate
+	DaysInMonth = 30
+
 )
 
 // UnixEpoch returns local Time corresponding to the beginning of UNIX epoch.
