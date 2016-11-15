@@ -358,7 +358,7 @@ func someSecondsChangePrecision(s int64, from, to uint8) int64 {
 	if to >= from {
 		return s * mathhelper.PowInt64(10, int64(to-from))
 	}
-	return mathhelper.DivideFixInt64(s, mathhelper.PowInt64(10, int64(from-to)))
+	return mathhelper.DivideRoundFixInt64(s, mathhelper.PowInt64(10, int64(from-to)))
 }
 
 // Add adds given Interval to original Interval.
@@ -394,9 +394,9 @@ func (i Interval) Mul(mul int64) Interval {
 // Original Interval will be changed.
 // TODO 'will be changed'?
 func (i Interval) Div(div int64) Interval {
-	i.Months = int32(mathhelper.DivideFixInt64(int64(i.Months), div))
-	i.Days = int32(mathhelper.DivideFixInt64(int64(i.Days), div))
-	i.SomeSeconds = mathhelper.DivideFixInt64(i.SomeSeconds, div)
+	i.Months = int32(mathhelper.DivideRoundFixInt64(int64(i.Months), div))
+	i.Days = int32(mathhelper.DivideRoundFixInt64(int64(i.Days), div))
+	i.SomeSeconds = mathhelper.DivideRoundFixInt64(i.SomeSeconds, div)
 	return i
 }
 
@@ -411,7 +411,7 @@ func (i Interval) In(i2 Interval) int64 {
 	} else {
 		iv = someSecondsChangePrecision(iv, i.precision, i2.precision)
 	}
-	return mathhelper.DivideFixInt64(i2v, iv)
+	return mathhelper.DivideRoundFixInt64(i2v, iv)
 }
 
 // Comparable returns true only if it is possible to compare Intervals.
